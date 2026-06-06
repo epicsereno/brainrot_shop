@@ -88,21 +88,14 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+# Free-tier deploy: a single Postgres database (e.g. Neon) supplied via
+# DATABASE_URL. Solid Cache/Queue/Cable run in-process in this env (see
+# config/environments/production.rb and config/cable.yml), so they don't need
+# their own databases. To scale up on a paid plan, restore the multi-database
+# setup with separate `cache`/`queue`/`cable` entries and *_DATABASE_URL vars.
 production:
-  primary: &primary_production
-    <<: *default
-    database: brainrot_shop_production
-    username: brainrot_shop
-    password: <%= ENV["BRAINROT_SHOP_DATABASE_PASSWORD"] %>
-  cache:
-    <<: *primary_production
-    database: brainrot_shop_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    database: brainrot_shop_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *primary_production
-    database: brainrot_shop_production_cable
-    migrations_paths: db/cable_migrate
+  primary:
+    adapter: postgresql
+    encoding: unicode
+    url: <%= ENV["DATABASE_URL"] %>
+    pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>

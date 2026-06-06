@@ -8,10 +8,8 @@ development:
 test:
   adapter: test
 
+# Free-tier deploy: single web instance, so the in-process async adapter is
+# enough. Switch back to solid_cable (with a `cable` database) when running
+# multiple web instances on a paid plan.
 production:
-  adapter: solid_cable
-  connects_to:
-    database:
-      writing: cable
-  polling_interval: 0.1.seconds
-  message_retention: 1.day
+  adapter: async
