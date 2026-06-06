@@ -1,0 +1,7 @@
+<% content_for :title, "Your Cart" %>
+
+<h1 class="mb-6 text-3xl font-black">Your Cart 🛒</h1>
+
+<div id="cart_contents">
+  <%= render "carts/contents", cart: @cart %>
+</div>

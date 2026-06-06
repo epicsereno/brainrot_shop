@@ -1,0 +1,47 @@
+<% content_for :title, @product.title %>
+
+<%= link_to "← Back to shop", products_path, class: "text-sm text-zinc-400 hover:text-zinc-200" %>
+
+<div class="mt-4 grid gap-8 md:grid-cols-2">
+  <div class="overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-900">
+    <div class="aspect-square bg-zinc-800">
+      <% if @product.image.attached? %>
+        <%= image_tag @product.image, class: "h-full w-full object-cover", alt: @product.title %>
+      <% else %>
+        <div class="flex h-full w-full items-center justify-center text-8xl">🧠</div>
+      <% end %>
+    </div>
+  </div>
+
+  <div>
+    <p class="text-xs uppercase tracking-wide text-zinc-500"><%= @product.category %></p>
+    <h1 class="mt-1 text-3xl font-black"><%= @product.title %></h1>
+    <p class="mt-2 text-2xl font-bold text-fuchsia-400"><%= number_to_currency(@product.base_price) %></p>
+    <p class="mt-4 whitespace-pre-line text-zinc-300"><%= @product.description %></p>
+
+    <% if @variants.any? %>
+      <%= form_with url: cart_items_path, method: :post, class: "mt-6 space-y-4" do |f| %>
+        <div>
+          <label for="variant_id" class="mb-1 block text-sm font-semibold text-zinc-300">Pick your variant</label>
+          <select name="variant_id" id="variant_id"
+                  class="w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100 focus:border-fuchsia-500 focus:outline-none">
+            <% @variants.each do |variant| %>
+              <option value="<%= variant.id %>"><%= variant.label %> — <%= number_to_currency(variant.price) %></option>
+            <% end %>
+          </select>
+        </div>
+
+        <div class="w-28">
+          <label for="quantity" class="mb-1 block text-sm font-semibold text-zinc-300">Qty</label>
+          <%= number_field_tag :quantity, 1, min: 1, max: 99,
+                class: "w-full rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-zinc-100 focus:border-fuchsia-500 focus:outline-none" %>
+        </div>
+
+        <%= f.submit "Add to cart 🛒",
+              class: "w-full cursor-pointer rounded-lg bg-gradient-to-r from-fuchsia-600 to-purple-600 px-6 py-3 font-bold text-white transition hover:from-fuchsia-500 hover:to-purple-500" %>
+      <% end %>
+    <% else %>
+      <p class="mt-6 rounded-lg border border-zinc-800 bg-zinc-900 p-4 text-zinc-400">Sold out of variants. 💀</p>
+    <% end %>
+  </div>
+</div>

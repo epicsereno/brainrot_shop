@@ -1,0 +1,7 @@
+<%= turbo_stream.replace "cart_badge" do %>
+  <%= render "shared/cart_badge", cart: @cart %>
+<% end %>
+
+<%= turbo_stream.replace "cart_contents" do %>
+  <%= render "carts/contents", cart: @cart %>
+<% end %>

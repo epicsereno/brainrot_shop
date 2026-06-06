@@ -1,0 +1,12 @@
+<div id="flash_messages" class="space-y-2 pt-4">
+  <% if notice.present? %>
+    <div class="rounded-lg border border-emerald-700 bg-emerald-950/60 px-4 py-3 text-sm text-emerald-200">
+      <%= notice %>
+    </div>
+  <% end %>
+  <% if alert.present? %>
+    <div class="rounded-lg border border-red-700 bg-red-950/60 px-4 py-3 text-sm text-red-200">
+      <%= alert %>
+    </div>
+  <% end %>
+</div>
